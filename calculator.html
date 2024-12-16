@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #3498db;
+        }
+
+        .calculator {
+            width: 320px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .display {
+            background: #fff;
+            color: #000;
+            font-size: 2em;
+            text-align: right;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: #444;
+        }
+
+        .button {
+            padding: 20px;
+            text-align: center;
+            background: #222;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.3s;
+        }
+
+        .button:hover {
+            background: #555;
+        }
+
+        .button.operator {
+            background: #f39c12;
+        }
+
+        .button.operator:hover {
+            background: #d87e04;
+        }
+
+        .button.equals {
+            background: #27ae60;
+            grid-column: span 3;
+        }
+
+        .button.equals:hover {
+            background: #1e8449;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <div class="button" onclick="appendNumber(7)">7</div>
+            <div class="button" onclick="appendNumber(8)">8</div>
+            <div class="button" onclick="appendNumber(9)">9</div>
+            <div class="button" onclick="deleteLast()">DEL</div>
+            <div class="button" onclick="appendNumber(4)">4</div>
+            <div class="button" onclick="appendNumber(5)">5</div>
+            <div class="button" onclick="appendNumber(6)">6</div>
+            <div class="button operator" onclick="appendOperator('/')">/</div>
+            <div class="button" onclick="appendNumber(1)">1</div>
+            <div class="button" onclick="appendNumber(2)">2</div>
+            <div class="button" onclick="appendNumber(3)">3</div>
+            <div class="button operator" onclick="appendOperator('*')">x</div>
+            <div class="button" onclick="appendDot()">.</div>
+            <div class="button" onclick="appendNumber(0)">0</div>
+            <div class="button" onclick="clearDisplay()">C</div>
+            <div class="button operator" onclick="appendOperator('-')">-</div>
+            <div class="button equals" onclick="calculateResult()">=</div>
+            <div class="button operator" onclick="appendOperator('+')">+</div>
+             
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+
+        function clearDisplay() {
+            display.textContent = '0';
+        }
+
+        function deleteLast() {
+            display.textContent = display.textContent.slice(0, -1) || '0';
+        }
+
+        function appendNumber(number) {
+            if (display.textContent === '0') {
+                display.textContent = number;
+            } else {
+                display.textContent += number;
+            }
+        }
+
+        function appendOperator(operator) {
+            const lastChar = display.textContent.slice(-1);
+            if ('+-*/'.includes(lastChar)) {
+                display.textContent = display.textContent.slice(0, -1) + operator;
+            } else {
+                display.textContent += operator;
+            }
+        }
+
+        function appendDot() {
+            const parts = display.textContent.split(/[-+*/]/);
+            const lastPart = parts[parts.length - 1];
+            if (!lastPart.includes('.')) {
+                display.textContent += '.';
+            }
+        }
+
+        function calculateResult() {
+            try {
+                display.textContent = eval(display.textContent.replace('x', '*'));
+            } catch {
+                display.textContent = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>
